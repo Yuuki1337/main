@@ -22,14 +22,13 @@ runs:
           with:
               version: 8
 
-        - name: Set GitHub Path
-          run: echo "$GITHUB_ACTION_PATH" >> $GITHUB_PATH
-          shell: bash
-          env:
-              GITHUB_ACTION_PATH: ${{ github.action_path }}
+        # - name: Set GitHub Path
+        #   run: echo "$GITHUB_ACTION_PATH" >> $GITHUB_PATH
+        #   shell: bash
+        #   env:
+        #       GITHUB_ACTION_PATH: ${{ github.action_path }}
 
         - name: Get pnpm cache directory path
-          if: steps.package_manager.outputs.name == 'pnpm'
           id: pnpm-cache-dir-path
           run: echo "dir=$(pnpm store path)" >> $GITHUB_OUTPUT
           shell: bash

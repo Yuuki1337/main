@@ -1,0 +1,39 @@
+name: Main nx affected
+description: Setup correct environment for nx affected to work and execute inputs commands.
+
+inputs:
+    affected_commands:
+        description: Nx affected commands to execute in a correct environment setup.
+        required: true
+    artifact_name:
+        description: Artifact name to upload after a successful run.
+        required: false
+    artifact_paths:
+        description: One or more artifact paths to upload after a successful run.
+        required: false
+
+runs:
+    using: "composite"
+    steps:
+        - name: Setup dependencies
+          uses: ./setup-dependencies/action.yml
+
+        # This line is needed for nx affected to work when CI is running on a PR
+        - run: git branch --track main origin/main
+          if: ${{ github.event_name == 'pull_request' }}
+
+        - name: Assess correct SHAs for nx affected commands
+          uses: nrwl/nx-set-shas@v3
+
+        - name: Run nx affected commands
+          run: |
+              ${{ inputs.affected_commands }}
+
+        - name: Uploading artifacts
+          if: ${{ inputs.artifact_name != '' && inputs.artifact_paths != '' }}
+          uses: actions/upload-artifact@v3
+          with:
+              name: ${{ inputs.artifact_name }}
+              path: |
+                  ${{ inputs.artifact_paths }}
+              retention-days: 1

@@ -21,6 +21,7 @@ runs:
         # This line is needed for nx affected to work when CI is running on a PR
         - run: git branch --track main origin/main
           if: ${{ github.event_name == 'pull_request' }}
+          shell: bash
 
         - name: Assess correct SHAs for nx affected commands
           uses: nrwl/nx-set-shas@v3
@@ -28,6 +29,7 @@ runs:
         - name: Run nx affected commands
           run: |
               ${{ inputs.affected_commands }}
+          shell: bash
 
         - name: Uploading artifacts
           if: ${{ inputs.artifact_name != '' && inputs.artifact_paths != '' }}

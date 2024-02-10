@@ -26,9 +26,11 @@ runs:
           if: steps.package_manager.outputs.name == 'pnpm'
           id: pnpm-cache-dir-path
           run: echo "dir=$(pnpm store path)" >> $GITHUB_OUTPUT
+          shell: bash
 
         - name: Cache and restore npm dependencies
           uses: actions/cache@v3
+          shell: bash
           with:
               enableCrossOsArchive: true
               path: ${{ steps.pnpm-cache-dir-path.outputs.dir }}

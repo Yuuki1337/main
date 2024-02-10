@@ -30,7 +30,6 @@ runs:
 
         - name: Cache and restore npm dependencies
           uses: actions/cache@v3
-          shell: bash
           with:
               enableCrossOsArchive: true
               path: ${{ steps.pnpm-cache-dir-path.outputs.dir }}
@@ -38,3 +37,4 @@ runs:
 
         - name: Install dependencies
           run: pnpm install --frozen-lockfile
+          shell: bash

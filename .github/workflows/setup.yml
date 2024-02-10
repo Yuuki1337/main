@@ -1,0 +1,38 @@
+name: Setup
+description: Checkout correct commit based on triggered event, installing and caching npm dependencies as well.
+
+runs:
+    using: "composite"
+    steps:
+        - name: Checkout [Pull request]
+          uses: actions/checkout@v4
+          if: ${{ github.event_name == 'pull_request' }}
+          with:
+              ref: ${{ github.event.pull_request.head.sha }}
+              fetch-depth: 0
+
+        - name: Checkout [Default Branch]
+          uses: actions/checkout@v4
+          if: ${{ github.event_name != 'pull_request' }}
+          with:
+              fetch-depth: 0
+
+        - name: Setup pnpm
+          uses: pnpm/action-setup@v2
+          with:
+              version: 8
+
+        - name: Get pnpm cache directory path
+          if: steps.package_manager.outputs.name == 'pnpm'
+          id: pnpm-cache-dir-path
+          run: echo "dir=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+        - name: Cache and restore npm dependencies
+          uses: actions/cache@v3
+          with:
+              enableCrossOsArchive: true
+              path: ${{ steps.pnpm-cache-dir-path.outputs.dir }}
+              key: npm-dependencies-${{ hashFiles('pnpm-lock.yaml') }}
+
+        - name: Install dependencies
+          run: pnpm install --frozen-lockfile

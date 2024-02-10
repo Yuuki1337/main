@@ -18,7 +18,7 @@ runs:
         - uses: actions/checkout@v4
 
         - name: Setup dependencies
-          uses: ./setup-dependencies/action.yml
+          uses: ./setup-dependencies
 
         # This line is needed for nx affected to work when CI is running on a PR
         - run: git branch --track main origin/main

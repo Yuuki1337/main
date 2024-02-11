@@ -43,6 +43,5 @@ runs:
               key: npm-dependencies-${{ hashFiles('pnpm-lock.yaml') }}
 
         - name: Install dependencies
-          if: ${{ inputs.validate_cache == 'true' }}
           run: pnpm install --frozen-lockfile
           shell: bash

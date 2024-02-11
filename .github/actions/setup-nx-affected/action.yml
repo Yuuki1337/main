@@ -12,6 +12,10 @@ inputs:
         description: One or more artifact paths to upload after a successful run.
         required: false
 
+permissions:
+    actions: read
+    contents: read
+
 runs:
     using: "composite"
     steps:
@@ -33,9 +37,6 @@ runs:
 
         - name: Assess correct SHAs for nx affected commands
           uses: nrwl/nx-set-shas@v3
-          permissions:
-              actions: read
-              contents: read
 
         - name: Run nx affected commands
           run: |

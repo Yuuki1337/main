@@ -19,16 +19,8 @@ permissions:
 runs:
     using: "composite"
     steps:
-        - uses: actions/checkout@v4
-
-        - name: Set GitHub Path
-          run: echo "$GITHUB_ACTION_PATH" >> $GITHUB_PATH
-          shell: bash
-          env:
-              GITHUB_ACTION_PATH: ${{ github.action_path }}
-
         - name: Setup dependencies
-          uses: ./../action/.github/actions/setup-dependencies
+          uses: Yuuki1337/main/.github/actions/setup-dependencies@v17
 
         # This line is needed for nx affected to work when CI is running on a PR
         - run: git branch --track main origin/main

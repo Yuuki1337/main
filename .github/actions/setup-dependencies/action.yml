@@ -1,5 +1,11 @@
-name: Setup
+name: Setup dependencies
 description: Checkout correct commit based on triggered event, installing and caching npm dependencies as well.
+
+inputs:
+    validate_cache:
+        description: Wether or not to launch pnpm install command to validate extracted cache.
+        required: false
+        default: true
 
 runs:
     using: "composite"
@@ -35,5 +41,6 @@ runs:
               key: npm-dependencies-${{ hashFiles('pnpm-lock.yaml') }}
 
         - name: Install dependencies
+          if: ${{ inputs.validate_cache == true }}
           run: pnpm install --frozen-lockfile
           shell: bash

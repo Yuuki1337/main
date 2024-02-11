@@ -20,7 +20,7 @@ runs:
     using: "composite"
     steps:
         - name: Setup dependencies
-          uses: Yuuki1337/main/.github/actions/setup-dependencies@v20
+          uses: Yuuki1337/main/.github/actions/setup-dependencies@v21
 
         # This line is needed for nx affected to work when CI is running on a PR
         - run: git branch --track main origin/main
